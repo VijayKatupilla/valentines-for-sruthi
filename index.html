@@ -12,15 +12,15 @@
 
   <style>
     :root {
-      --bg1: #0b0f2a;
-      --bg2: #151a3a;
-      --card: rgba(255,255,255,.08);
-      --card-border: rgba(255,255,255,.14);
+      --bg1: #0d0a1f;
+      --bg2: #241538;
+      --card: rgba(255,255,255,.10);
+      --card-border: rgba(255,255,255,.16);
       --text: #f9fafb;
       --muted: #d7d9e4;
-      --accent: #ff4d8d;
-      --accent-2: #ff8ab8;
-      --glow: rgba(255,77,141,.25);
+      --accent: #ff6fa5;
+      --accent-2: #ff9fba;
+      --glow: rgba(255,111,165,.28);
     }
 
     * { box-sizing: border-box; }
@@ -31,13 +31,26 @@
       display: grid;
       place-items: center;
       background:
-        radial-gradient(140% 120% at 20% 0%, rgba(255,77,141,.07), transparent 45%),
-        radial-gradient(120% 160% at 80% 20%, rgba(79,195,255,.08), transparent 50%),
-        linear-gradient(140deg, var(--bg2) 0%, #0f1533 40%, var(--bg1) 100%);
+        radial-gradient(140% 120% at 20% 0%, rgba(255,111,165,.08), transparent 45%),
+        radial-gradient(120% 160% at 80% 20%, rgba(126,168,255,.10), transparent 55%),
+        linear-gradient(150deg, var(--bg2) 0%, #1a1030 45%, var(--bg1) 100%);
       font-family: "Manrope", system-ui, -apple-system, sans-serif;
       color: var(--text);
       overflow: hidden;
       position: relative;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: -10%;
+      background-image: radial-gradient(circle at 10% 20%, rgba(255,255,255,.06), transparent 20%),
+                        radial-gradient(circle at 80% 10%, rgba(255,111,165,.10), transparent 24%),
+                        radial-gradient(circle at 50% 90%, rgba(255,255,255,.05), transparent 18%);
+      filter: blur(10px);
+      pointer-events: none;
+      opacity: .6;
+      z-index: 0;
     }
 
     body::after {
@@ -50,49 +63,52 @@
       opacity: .7;
     }
 
-    /* ---------------- BACKGROUND PHOTO FRAME ---------------- */
+    /* ---------------- BACKGROUND PHOTO GRID ---------------- */
     .photo-frame {
       position: fixed;
       inset: 0;
-      display: none;
-      z-index: 0;
+      display: grid;
+      place-items: center;
       pointer-events: none;
+      z-index: 0;
     }
 
-    .photo-frame.show { display: block; }
+    .photo-frame.show { display: grid; }
+
+    .photo-grid {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(90px, 1fr));
+      gap: 14px;
+      padding: 24px;
+      width: min(92vw, 900px);
+      transform: rotate(-3deg);
+    }
 
     .photo {
-      position: absolute;
-      width: clamp(130px, 18vw, 220px);
-      height: clamp(130px, 18vw, 220px);
+      width: 100%;
+      aspect-ratio: 4 / 5;
       object-fit: cover;
-      border-radius: 20px;
+      border-radius: 18px;
       box-shadow:
-        0 18px 38px rgba(0,0,0,.55),
-        0 0 18px var(--glow);
-      opacity: .95;
-      image-rendering: auto;
-      filter: saturate(1.06) contrast(1.05);
-      transition: transform .5s ease, opacity .5s ease;
+        0 14px 32px rgba(0,0,0,.45),
+        0 0 18px rgba(255,77,141,.22);
+      filter: saturate(1.05) contrast(1.04);
+      transition: transform .4s ease, opacity .4s ease;
+      opacity: 0.92;
     }
 
-    /* top row */
-    .t1 { top: 5%; left: 12%; transform: rotate(-6deg); width: 180px; height: 180px; }
-    .t2 { top: 4%; left: 38%; transform: rotate(4deg); width: 160px; height: 160px; }
-    .t3 { top: 6%; left: 62%; transform: rotate(-3deg); width: 190px; height: 190px; }
-
-    /* bottom row */
-    .b1 { bottom: 4%; left: 12%; transform: rotate(5deg); width: 170px; height: 170px; }
-    .b2 { bottom: 3%; left: 38%; transform: rotate(-5deg); width: 190px; height: 190px; }
-    .b3 { bottom: 5%; left: 62%; transform: rotate(6deg); width: 160px; height: 160px; }
-
-    /* left column */
-    .l1 { top: 28%; left: 4%; transform: rotate(-8deg); width: 200px; height: 200px; }
-    .l2 { top: 54%; left: 5%; transform: rotate(8deg); width: 180px; height: 180px; }
-
-    /* right column */
-    .r1 { top: 28%; right: 4%; transform: rotate(7deg); width: 190px; height: 190px; }
-    .r2 { top: 55%; right: 5%; transform: rotate(-7deg); width: 170px; height: 170px; }
+    /* heart-ish layout by spanning cells */
+    .p1  { grid-column: 2; }
+    .p2  { grid-column: 3; }
+    .p3  { grid-column: 4; }
+    .p4  { grid-column: 1 / span 2; }
+    .p5  { grid-column: 2 / span 2; }
+    .p6  { grid-column: 3 / span 2; }
+    .p7  { grid-column: 1 / span 2; }
+    .p8  { grid-column: 2 / span 2; }
+    .p9  { grid-column: 3 / span 2; }
+    .p10 { grid-column: 2 / span 2; }
+    .p11 { grid-column: 3 / span 2; }
 
     /* ---------------- CENTER CARD ---------------- */
     .card {
@@ -203,20 +219,15 @@
 
     /* ================= MOBILE FIX ================= */
     @media (max-width: 768px) {
-      .photo {
-        width: 120px;
-        height: 120px;
+      .photo-grid {
+        grid-template-columns: repeat(3, minmax(90px, 1fr));
+        transform: rotate(0deg);
+        gap: 10px;
       }
-
-      .l1, .l2, .r1, .r2 { display: none; }
-
-      .t1 { top: 6%; left: 8%; transform: rotate(-4deg); }
-      .t2 { top: 6%; left: 36%; transform: rotate(3deg); }
-      .t3 { top: 6%; left: 64%; transform: rotate(-2deg); }
-
-      .b1 { bottom: 6%; left: 8%; transform: rotate(4deg); }
-      .b2 { bottom: 6%; left: 36%; transform: rotate(-4deg); }
-      .b3 { bottom: 6%; left: 64%; transform: rotate(2deg); }
+      .photo { border-radius: 14px; }
+      .p1, .p2, .p3, .p4, .p5, .p6, .p7, .p8, .p9, .p10, .p11 {
+        grid-column: auto / span 1;
+      }
 
       .card {
         margin-top: 120px;
@@ -230,19 +241,19 @@
 
   <!-- BACKGROUND PHOTOS -->
   <div class="photo-frame" id="photoFrame">
-    <img class="photo t1" src="./photos/photo-1.jpeg" loading="lazy" decoding="async" alt="">
-    <img class="photo t2" src="./photos/photo-2.jpeg" loading="lazy" decoding="async" alt="">
-    <img class="photo t3" src="./photos/photo-3.jpeg" loading="lazy" decoding="async" alt="">
-
-    <img class="photo b1" src="./photos/photo-4.jpeg" loading="lazy" decoding="async" alt="">
-    <img class="photo b2" src="./photos/photo-5.jpeg" loading="lazy" decoding="async" alt="">
-    <img class="photo b3" src="./photos/photo-6.jpeg" loading="lazy" decoding="async" alt="">
-
-    <img class="photo l1" src="./photos/photo-7.jpeg" loading="lazy" decoding="async" alt="">
-    <img class="photo l2" src="./photos/photo-8.jpeg" loading="lazy" decoding="async" alt="">
-
-    <img class="photo r1" src="./photos/photo-9.jpeg" loading="lazy" decoding="async" alt="">
-    <img class="photo r2" src="./photos/photo-10.jpeg" loading="lazy" decoding="async" alt="">
+    <div class="photo-grid">
+      <img class="photo p1"  src="./photos/photo-1.jpeg"  loading="lazy" decoding="async" alt="">
+      <img class="photo p2"  src="./photos/photo-2.jpeg"  loading="lazy" decoding="async" alt="">
+      <img class="photo p3"  src="./photos/photo-3.jpeg"  loading="lazy" decoding="async" alt="">
+      <img class="photo p4"  src="./photos/photo-4.jpeg"  loading="lazy" decoding="async" alt="">
+      <img class="photo p5"  src="./photos/photo-5.jpeg"  loading="lazy" decoding="async" alt="">
+      <img class="photo p6"  src="./photos/photo-6.jpeg"  loading="lazy" decoding="async" alt="">
+      <img class="photo p7"  src="./photos/photo-11.jpeg" loading="lazy" decoding="async" alt="">
+      <img class="photo p8"  src="./photos/photo-12.jpeg" loading="lazy" decoding="async" alt="">
+      <img class="photo p9"  src="./photos/photo-13.jpeg" loading="lazy" decoding="async" alt="">
+      <img class="photo p10" src="./photos/photo-14.jpeg" loading="lazy" decoding="async" alt="">
+      <img class="photo p11" src="./photos/photo-15.jpeg" loading="lazy" decoding="async" alt="">
+    </div>
   </div>
 
   <audio id="bgMusic" loop preload="auto">
@@ -251,8 +262,8 @@
 
   <!-- CENTER CONTENT -->
   <main class="card">
-    <h1>Sruthi, will you be my Valentine? 💕</h1>
-    <p class="tagline">I made this little page to ask you properly—stay for the surprise?</p>
+    <h1>Sruthi, will you be my Valentine? &#128149;</h1>
+    <p class="tagline">I made this little page to ask you properly&mdash;stay for the surprise?</p>
 
     <div class="button-zone" id="zone">
       <button id="yesBtn">Yes</button>
