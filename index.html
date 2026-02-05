@@ -3,17 +3,24 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Sruthi ❤️ Valentine</title>
+  <title>Sruthi ❤ Valentine</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Manrope:wght@400;600;700&display=swap" rel="stylesheet">
 
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
 
   <style>
     :root {
       --bg1: #0b0f2a;
-      --bg2: #1a1f4d;
+      --bg2: #151a3a;
       --card: rgba(255,255,255,.08);
+      --card-border: rgba(255,255,255,.14);
       --text: #f9fafb;
+      --muted: #d7d9e4;
       --accent: #ff4d8d;
+      --accent-2: #ff8ab8;
+      --glow: rgba(255,77,141,.25);
     }
 
     * { box-sizing: border-box; }
@@ -23,10 +30,24 @@
       min-height: 100vh;
       display: grid;
       place-items: center;
-      background: radial-gradient(circle at top, var(--bg2), var(--bg1));
-      font-family: system-ui, sans-serif;
+      background:
+        radial-gradient(140% 120% at 20% 0%, rgba(255,77,141,.07), transparent 45%),
+        radial-gradient(120% 160% at 80% 20%, rgba(79,195,255,.08), transparent 50%),
+        linear-gradient(140deg, var(--bg2) 0%, #0f1533 40%, var(--bg1) 100%);
+      font-family: "Manrope", system-ui, -apple-system, sans-serif;
       color: var(--text);
       overflow: hidden;
+      position: relative;
+    }
+
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(circle at center, rgba(255,255,255,.08), transparent 48%);
+      pointer-events: none;
+      mix-blend-mode: screen;
+      opacity: .7;
     }
 
     /* ---------------- BACKGROUND PHOTO FRAME ---------------- */
@@ -38,97 +59,125 @@
       pointer-events: none;
     }
 
-    .photo-frame.show {
-      display: block;
-    }
+    .photo-frame.show { display: block; }
 
     .photo {
-  position: absolute;
-  width: 600px;
-  height: 600px;
-  object-fit: cover;
-  border-radius: 22px;
-  box-shadow:
-    0 16px 40px rgba(0,0,0,.65),
-    0 0 30px rgba(255,77,141,.25);
-  opacity: 1;
-  image-rendering: auto;
-}
-
-@media (max-width: 768px) {
-  .photo {
-    width: 600px;
-    height: 600px;
-  }
-}
-
+      position: absolute;
+      width: clamp(130px, 18vw, 220px);
+      height: clamp(130px, 18vw, 220px);
+      object-fit: cover;
+      border-radius: 20px;
+      box-shadow:
+        0 18px 38px rgba(0,0,0,.55),
+        0 0 18px var(--glow);
+      opacity: .95;
+      image-rendering: auto;
+      filter: saturate(1.06) contrast(1.05);
+      transition: transform .5s ease, opacity .5s ease;
+    }
 
     /* top row */
-    .t1 { top: 3%; left: 20%; width: 160px; height: 160px; }
-    .t2 { top: 3%; left: 40%; width: 160px; height: 160px; }
-    .t3 { top: 3%; left: 60%; width: 160px; height: 160px; }
+    .t1 { top: 5%; left: 12%; transform: rotate(-6deg); width: 180px; height: 180px; }
+    .t2 { top: 4%; left: 38%; transform: rotate(4deg); width: 160px; height: 160px; }
+    .t3 { top: 6%; left: 62%; transform: rotate(-3deg); width: 190px; height: 190px; }
 
     /* bottom row */
-    .b1 { bottom: 3%; left: 20%; width: 160px; height: 160px; }
-    .b2 { bottom: 3%; left: 40%; width: 160px; height: 160px; }
-    .b3 { bottom: 3%; left: 60%; width: 160px; height: 160px; }
+    .b1 { bottom: 4%; left: 12%; transform: rotate(5deg); width: 170px; height: 170px; }
+    .b2 { bottom: 3%; left: 38%; transform: rotate(-5deg); width: 190px; height: 190px; }
+    .b3 { bottom: 5%; left: 62%; transform: rotate(6deg); width: 160px; height: 160px; }
 
     /* left column */
-    .l1 { top: 30%; left: 3%; width: 180px; height: 180px; }
-    .l2 { top: 55%; left: 3%; width: 180px; height: 180px; }
+    .l1 { top: 28%; left: 4%; transform: rotate(-8deg); width: 200px; height: 200px; }
+    .l2 { top: 54%; left: 5%; transform: rotate(8deg); width: 180px; height: 180px; }
 
     /* right column */
-    .r1 { top: 30%; right: 3%; width: 180px; height: 180px; }
-    .r2 { top: 55%; right: 3%; width: 180px; height: 180px; }
+    .r1 { top: 28%; right: 4%; transform: rotate(7deg); width: 190px; height: 190px; }
+    .r2 { top: 55%; right: 5%; transform: rotate(-7deg); width: 170px; height: 170px; }
 
-    /* ---------------- CENTER CARD (UNCHANGED) ---------------- */
+    /* ---------------- CENTER CARD ---------------- */
     .card {
       position: relative;
       z-index: 2;
       width: min(760px, 94vw);
       background: var(--card);
       backdrop-filter: blur(16px);
-      border-radius: 24px;
-      padding: 28px 22px;
+      border-radius: 26px;
+      padding: 34px 28px;
       text-align: center;
-      box-shadow: 0 20px 60px rgba(0,0,0,.45);
-      border: 1px solid rgba(255,255,255,.12);
+      box-shadow: 0 22px 60px rgba(0,0,0,.45);
+      border: 1px solid var(--card-border);
+      overflow: hidden;
     }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: -20%;
+      background: radial-gradient(circle at center, rgba(255,255,255,.08), transparent 55%);
+      filter: blur(18px);
+      z-index: 0;
+    }
+
+    .card > * { position: relative; z-index: 1; }
 
     h1 {
       font-size: clamp(26px, 4vw, 44px);
-      margin-bottom: 22px;
+      margin-bottom: 10px;
+      font-family: "Playfair Display", "Manrope", serif;
+      letter-spacing: 0.2px;
+    }
+
+    .tagline {
+      color: var(--muted);
+      margin: 0 0 24px;
+      font-size: 16px;
+      line-height: 1.5;
     }
 
     .button-zone {
       position: relative;
       width: 100%;
-      height: 140px;
+      height: 150px;
     }
 
     button {
       position: absolute;
       top: 50%;
       transform: translateY(-50%);
-      padding: 16px 26px;
+      padding: 16px 28px;
       font-size: 18px;
       font-weight: 700;
       border-radius: 999px;
       border: none;
       cursor: pointer;
+      transition: transform .2s ease, box-shadow .2s ease, background .2s ease;
     }
 
     #yesBtn {
       left: 20%;
-      background: var(--accent);
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
       color: white;
+      box-shadow: 0 12px 30px rgba(255,77,141,.35);
     }
 
     #noBtn {
       left: 60%;
       background: #e5e7eb;
       color: #111;
+      box-shadow: 0 8px 22px rgba(0,0,0,.2);
     }
+
+    button:hover {
+      transform: translateY(-60%) scale(1.02);
+    }
+
+    button:focus-visible {
+      outline: 3px solid rgba(255,77,141,.6);
+      outline-offset: 3px;
+    }
+
+    #yesBtn:hover { box-shadow: 0 14px 34px rgba(255,77,141,.45); }
+    #noBtn:hover { box-shadow: 0 10px 26px rgba(0,0,0,.25); }
 
     .result {
       opacity: 0;
@@ -151,6 +200,29 @@
       max-width: 560px;
       margin: 14px auto;
     }
+
+    /* ================= MOBILE FIX ================= */
+    @media (max-width: 768px) {
+      .photo {
+        width: 120px;
+        height: 120px;
+      }
+
+      .l1, .l2, .r1, .r2 { display: none; }
+
+      .t1 { top: 6%; left: 8%; transform: rotate(-4deg); }
+      .t2 { top: 6%; left: 36%; transform: rotate(3deg); }
+      .t3 { top: 6%; left: 64%; transform: rotate(-2deg); }
+
+      .b1 { bottom: 6%; left: 8%; transform: rotate(4deg); }
+      .b2 { bottom: 6%; left: 36%; transform: rotate(-4deg); }
+      .b3 { bottom: 6%; left: 64%; transform: rotate(2deg); }
+
+      .card {
+        margin-top: 120px;
+        margin-bottom: 120px;
+      }
+    }
   </style>
 </head>
 
@@ -158,35 +230,36 @@
 
   <!-- BACKGROUND PHOTOS -->
   <div class="photo-frame" id="photoFrame">
-    <img class="photo t1" src="./photos/photo-1.jpeg">
-    <img class="photo t2" src="./photos/photo-2.jpeg">
-    <img class="photo t3" src="./photos/photo-3.jpeg">
+    <img class="photo t1" src="./photos/photo-1.jpeg" loading="lazy" decoding="async" alt="">
+    <img class="photo t2" src="./photos/photo-2.jpeg" loading="lazy" decoding="async" alt="">
+    <img class="photo t3" src="./photos/photo-3.jpeg" loading="lazy" decoding="async" alt="">
 
-    <img class="photo b1" src="./photos/photo-4.jpeg">
-    <img class="photo b2" src="./photos/photo-5.jpeg">
-    <img class="photo b3" src="./photos/photo-6.jpeg">
+    <img class="photo b1" src="./photos/photo-4.jpeg" loading="lazy" decoding="async" alt="">
+    <img class="photo b2" src="./photos/photo-5.jpeg" loading="lazy" decoding="async" alt="">
+    <img class="photo b3" src="./photos/photo-6.jpeg" loading="lazy" decoding="async" alt="">
 
-    <img class="photo l1" src="./photos/photo-7.jpeg">
-    <img class="photo l2" src="./photos/photo-8.jpeg">
+    <img class="photo l1" src="./photos/photo-7.jpeg" loading="lazy" decoding="async" alt="">
+    <img class="photo l2" src="./photos/photo-8.jpeg" loading="lazy" decoding="async" alt="">
 
-    <img class="photo r1" src="./photos/photo-9.jpeg">
-    <img class="photo r2" src="./photos/photo-10.jpeg">
+    <img class="photo r1" src="./photos/photo-9.jpeg" loading="lazy" decoding="async" alt="">
+    <img class="photo r2" src="./photos/photo-10.jpeg" loading="lazy" decoding="async" alt="">
   </div>
 
-  <audio id="bgMusic" loop>
+  <audio id="bgMusic" loop preload="auto">
     <source src="https://www.bensound.com/bensound-music/bensound-love.mp3">
   </audio>
 
-  <!-- CENTER CONTENT (YOUR CODE PRESERVED) -->
+  <!-- CENTER CONTENT -->
   <main class="card">
     <h1>Sruthi, will you be my Valentine? 💕</h1>
+    <p class="tagline">I made this little page to ask you properly—stay for the surprise?</p>
 
     <div class="button-zone" id="zone">
       <button id="yesBtn">Yes</button>
       <button id="noBtn">No</button>
     </div>
 
-    <section class="result" id="result">
+    <section class="result" id="result" aria-live="polite">
       <p id="loveText"></p>
     </section>
   </main>
@@ -198,41 +271,49 @@
     const result = document.getElementById("result");
     const photoFrame = document.getElementById("photoFrame");
     const music = document.getElementById("bgMusic");
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
     const message =
-  "You just made me the happiest person 💖\n" +
+  "You just made me the happiest person ❤️\n" +
   "Every moment with you means everything to me.\n\n" +
   "Happy Valentine’s Day, Sruthi ❤️";
 
     function typeMessage(el, text) {
-  let i = 0;
-  el.innerHTML = "";
-  const t = setInterval(() => {
-    const char = text[i++];
-    if (char === "\n") {
-      el.innerHTML += "<br>";
-    } else {
-      el.innerHTML += char;
+      let i = 0;
+      el.innerHTML = "";
+      const t = setInterval(() => {
+        const char = text[i++];
+        if (char === "\n") {
+          el.innerHTML += "<br>";
+        } else {
+          el.innerHTML += char;
+        }
+        if (i >= text.length) clearInterval(t);
+      }, 40);
     }
-    if (i >= text.length) clearInterval(t);
-  }, 40);
-}
-
 
     yesBtn.onclick = () => {
       zone.style.display = "none";
       result.classList.add("show");
       photoFrame.classList.add("show");
-      music.play();
+      if (!reduceMotion) {
+        music.play();
+        confetti({ particleCount: 260, spread: 140, origin: { y: .6 } });
+      } else {
+        music.play();
+      }
       typeMessage(document.getElementById("loveText"), message);
-      confetti({ particleCount: 260, spread: 140, origin: { y: .6 } });
     };
 
     zone.onpointermove = e => {
+      if (reduceMotion) return;
       const b = noBtn.getBoundingClientRect();
-      if (Math.hypot(b.left - e.clientX, b.top - e.clientY) < 120) {
-        noBtn.style.left = Math.random() * 65 + "%";
-        noBtn.style.top = Math.random() * 65 + "%";
+      const tooClose = Math.hypot(b.left - e.clientX, b.top - e.clientY) < 80;
+      if (tooClose) {
+        const newLeft = 10 + Math.random() * 60;
+        const newTop = 10 + Math.random() * 60;
+        noBtn.style.left = newLeft + "%";
+        noBtn.style.top = newTop + "%";
       }
     };
   </script>
