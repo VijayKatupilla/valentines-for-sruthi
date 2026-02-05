@@ -67,13 +67,18 @@
     .photo-frame {
       position: fixed;
       inset: 0;
-      display: grid;
+      display: none;
       place-items: center;
       pointer-events: none;
       z-index: 0;
+      opacity: 0;
+      transition: opacity .6s ease;
     }
 
-    .photo-frame.show { display: grid; }
+    .photo-frame.show {
+      display: grid;
+      opacity: 1;
+    }
 
     .photo-grid {
       display: grid;
