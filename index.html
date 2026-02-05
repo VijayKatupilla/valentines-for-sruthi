@@ -116,14 +116,18 @@
     }
 
     .result {
-      display: none;
-      margin-top: 18px;
-      animation: pop .4s ease;
-    }
+  opacity: 0;
+  max-height: 0;
+  overflow: hidden;
+  pointer-events: none;
+  transition: opacity .4s ease, max-height .4s ease;
+}
 
-    .result.show {
-      display: block;
-    }
+.result.show {
+  opacity: 1;
+  max-height: 2000px; /* large enough to fit content */
+  pointer-events: auto;
+}
 
     #loveText {
       font-size: 18px;
