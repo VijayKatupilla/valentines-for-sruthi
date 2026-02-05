@@ -63,12 +63,11 @@
       opacity: .7;
     }
 
-    /* ---------------- BACKGROUND PHOTO GRID ---------------- */
+    /* ---------------- BACKGROUND PHOTOS AROUND CARD ---------------- */
     .photo-frame {
       position: fixed;
       inset: 0;
       display: none;
-      place-items: center;
       pointer-events: none;
       z-index: 0;
       opacity: 0;
@@ -76,44 +75,39 @@
     }
 
     .photo-frame.show {
-      display: grid;
+      display: block;
       opacity: 1;
     }
 
-    .photo-grid {
-      display: grid;
-      grid-template-columns: repeat(5, minmax(90px, 1fr));
-      gap: 14px;
-      padding: 24px;
-      width: min(92vw, 900px);
-      transform: rotate(-3deg);
-    }
-
     .photo {
-      width: 100%;
-      aspect-ratio: 4 / 5;
+      position: absolute;
+      width: clamp(130px, 16vw, 190px);
+      height: clamp(130px, 16vw, 190px);
       object-fit: cover;
       border-radius: 18px;
       box-shadow:
-        0 14px 32px rgba(0,0,0,.45),
-        0 0 18px rgba(255,77,141,.22);
+        0 16px 34px rgba(0,0,0,.48),
+        0 0 16px rgba(255,77,141,.24);
       filter: saturate(1.05) contrast(1.04);
       transition: transform .4s ease, opacity .4s ease;
       opacity: 0.92;
     }
 
-    /* heart-ish layout by spanning cells */
-    .p1  { grid-column: 2; }
-    .p2  { grid-column: 3; }
-    .p3  { grid-column: 4; }
-    .p4  { grid-column: 1 / span 2; }
-    .p5  { grid-column: 2 / span 2; }
-    .p6  { grid-column: 3 / span 2; }
-    .p7  { grid-column: 1 / span 2; }
-    .p8  { grid-column: 2 / span 2; }
-    .p9  { grid-column: 3 / span 2; }
-    .p10 { grid-column: 2 / span 2; }
-    .p11 { grid-column: 3 / span 2; }
+    /* positions around the card, leaving center clear */
+    .p1  { top: 4%; left: 18%; transform: rotate(-6deg); }
+    .p2  { top: 3%; left: 42%; transform: rotate(4deg); }
+    .p3  { top: 4%; left: 66%; transform: rotate(-3deg); }
+
+    .p4  { top: 26%; left: 4%; transform: rotate(-8deg); }
+    .p5  { top: 55%; left: 6%; transform: rotate(7deg); }
+
+    .p6  { top: 26%; right: 6%; transform: rotate(6deg); }
+    .p7  { top: 54%; right: 5%; transform: rotate(-7deg); }
+
+    .p8  { bottom: 7%; left: 14%; transform: rotate(5deg); }
+    .p9  { bottom: 6%; left: 42%; transform: rotate(-4deg); }
+    .p10 { bottom: 7%; left: 68%; transform: rotate(6deg); }
+    .p11 { top: 68%; right: 32%; transform: rotate(-5deg); }
 
     /* ---------------- CENTER CARD ---------------- */
     .card {
@@ -224,15 +218,22 @@
 
     /* ================= MOBILE FIX ================= */
     @media (max-width: 768px) {
-      .photo-grid {
-        grid-template-columns: repeat(3, minmax(90px, 1fr));
-        transform: rotate(0deg);
-        gap: 10px;
+      .photo {
+        width: 120px;
+        height: 120px;
       }
-      .photo { border-radius: 14px; }
-      .p1, .p2, .p3, .p4, .p5, .p6, .p7, .p8, .p9, .p10, .p11 {
-        grid-column: auto / span 1;
-      }
+
+      /* hide side photos to keep space */
+      .p4, .p5, .p6, .p7 { display: none; }
+
+      /* tighten layout */
+      .p1 { top: 8%; left: 14%; }
+      .p2 { top: 8%; left: 44%; }
+      .p3 { top: 8%; left: 70%; }
+      .p8 { bottom: 10%; left: 16%; }
+      .p9 { bottom: 10%; left: 44%; }
+      .p10 { bottom: 10%; left: 70%; }
+      .p11 { display: none; }
 
       .card {
         margin-top: 120px;
