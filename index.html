@@ -1,290 +1,262 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Sruthi ❤️ Valentine</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sruthi ❤️ Valentine</title>
 
-  <!-- Confetti -->
-  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
 
-  <style>
-    :root {
-      --bg1: #0b0f2a;
-      --bg2: #1a1f4d;
-      --card: rgba(255,255,255,.08);
-      --text: #f9fafb;
-      --accent: #ff4d8d;
-      --glow: rgba(255,77,141,.6);
-    }
+<style>
+:root {
+  --bg1:#0b0f2a;
+  --bg2:#1a1f4d;
+  --card:rgba(255,255,255,.08);
+  --accent:#ff4d8d;
+  --glow:rgba(255,77,141,.7);
+  --text:#f9fafb;
+}
 
-    * { box-sizing: border-box; }
+*{box-sizing:border-box}
 
-    body {
-      margin: 0;
-      min-height: 100vh;
-      display: grid;
-      place-items: center;
-      background: radial-gradient(circle at top, var(--bg2), var(--bg1));
-      font-family: system-ui, sans-serif;
-      color: var(--text);
-      overflow-x: hidden;
-      padding: 16px;
-    }
+body{
+  margin:0;
+  min-height:100vh;
+  display:grid;
+  place-items:center;
+  background:radial-gradient(circle at top,var(--bg2),var(--bg1));
+  font-family:system-ui,sans-serif;
+  color:var(--text);
+  overflow-x:hidden;
+  padding:16px;
+}
 
-    /* Stars */
-    #stars {
-      position: fixed;
-      inset: 0;
-      background:
-        radial-gradient(2px 2px at 20% 30%, #fff, transparent),
-        radial-gradient(1px 1px at 80% 40%, #fff, transparent),
-        radial-gradient(1px 1px at 50% 80%, #fff, transparent);
-      animation: twinkle 6s infinite alternate;
-      z-index: -1;
-    }
+.card{
+  width:min(820px,96vw);
+  background:var(--card);
+  backdrop-filter:blur(18px);
+  border-radius:26px;
+  padding:28px;
+  text-align:center;
+  box-shadow:0 30px 80px rgba(0,0,0,.6);
+  border:1px solid rgba(255,255,255,.12);
+}
 
-    @keyframes twinkle {
-      from { opacity: .4; }
-      to { opacity: .8; }
-    }
+h1{
+  font-size:clamp(26px,4vw,44px);
+  margin-bottom:22px;
+}
 
-    .card {
-      width: min(760px, 94vw);
-      background: var(--card);
-      backdrop-filter: blur(16px);
-      border-radius: 24px;
-      padding: 28px 22px;
-      text-align: center;
-      box-shadow: 0 20px 60px rgba(0,0,0,.45);
-      border: 1px solid rgba(255,255,255,.12);
-    }
+.button-zone{
+  position:relative;
+  height:140px;
+}
 
-    h1 {
-      font-size: clamp(26px, 4vw, 44px);
-      margin-bottom: 22px;
-    }
+button{
+  position:absolute;
+  top:50%;
+  transform:translateY(-50%);
+  padding:16px 28px;
+  font-size:18px;
+  font-weight:700;
+  border-radius:999px;
+  border:none;
+  cursor:pointer;
+  box-shadow:0 10px 28px rgba(0,0,0,.4);
+}
 
-    .button-zone {
-      position: relative;
-      width: 100%;
-      height: 140px;
-    }
+#yesBtn{
+  left:20%;
+  background:var(--accent);
+  color:white;
+}
 
-    button {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      padding: 16px 26px;
-      font-size: 18px;
-      font-weight: 700;
-      border-radius: 999px;
-      border: none;
-      cursor: pointer;
-      box-shadow: 0 10px 24px rgba(0,0,0,.35);
-    }
+#noBtn{
+  left:60%;
+  background:#e5e7eb;
+  color:#111;
+}
 
-    #yesBtn {
-      left: 20%;
-      background: var(--accent);
-      color: white;
-    }
+.result{
+  opacity:0;
+  max-height:0;
+  overflow:hidden;
+  transition:all .6s ease;
+  pointer-events:none;
+}
 
-    #noBtn {
-      left: 60%;
-      background: #e5e7eb;
-      color: #111;
-    }
+.result.show{
+  opacity:1;
+  max-height:5000px;
+  pointer-events:auto;
+  margin-top:20px;
+}
 
-    /* Result section (no display:none) */
-    .result {
-      opacity: 0;
-      max-height: 0;
-      overflow: hidden;
-      transition: all .5s ease;
-      pointer-events: none;
-    }
+#loveText{
+  font-size:18px;
+  line-height:1.6;
+  max-width:600px;
+  margin:14px auto;
+}
 
-    .result.show {
-      opacity: 1;
-      max-height: 3000px;
-      pointer-events: auto;
-      margin-top: 20px;
-    }
+/* GALLERY */
+.gallery{
+  margin-top:24px;
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(130px,1fr));
+  gap:14px;
+}
 
-    #loveText {
-      font-size: 18px;
-      line-height: 1.6;
-      max-width: 560px;
-      margin: 14px auto;
-    }
+.gallery img{
+  width:100%;
+  aspect-ratio:1/1;
+  object-fit:cover;
+  border-radius:18px;
+  cursor:pointer;
+  opacity:0;
+  transform:scale(.7) rotate(-5deg);
+  animation:fadeUp .8s ease forwards;
+  box-shadow:0 10px 26px rgba(0,0,0,.6);
+  transition:transform .4s ease;
+}
 
-    /* Gallery */
-    .gallery {
-      margin-top: 22px;
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-      gap: 12px;
-    }
+.gallery img:nth-child(odd){animation-delay:.2s}
+.gallery img:nth-child(even){animation-delay:.6s}
 
-    .gallery img {
-      width: 100%;
-      aspect-ratio: 1 / 1;
-      object-fit: cover;
-      border-radius: 16px;
-      cursor: pointer;
-      opacity: 0;
-      transform: translateY(20px);
-      animation: fadeUp .6s ease forwards;
-      box-shadow: 0 8px 22px rgba(0,0,0,.5);
-      transition: transform .3s ease, box-shadow .3s ease;
-    }
+.gallery img.active{
+  outline:4px solid var(--accent);
+  transform:scale(1.15) rotate(2deg);
+  z-index:2;
+}
 
-    .gallery img.active {
-      box-shadow: 0 0 30px var(--glow);
-      transform: scale(1.05);
-    }
+@keyframes fadeUp{
+  to{opacity:1;transform:scale(1) rotate(0)}
+}
 
-    .gallery img:hover {
-      transform: scale(1.07);
-    }
+/* MODAL */
+.modal{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.92);
+  z-index:9999;
+  justify-content:center;
+  align-items:center;
+}
 
-    @keyframes fadeUp {
-      to { opacity: 1; transform: translateY(0); }
-    }
+.modal.show{display:flex}
 
-    /* Modal */
-    .modal {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,.9);
-      z-index: 9999;
-      justify-content: center;
-      align-items: center;
-    }
+.modal img{
+  max-width:92vw;
+  max-height:92vh;
+  border-radius:20px;
+  box-shadow:0 0 50px var(--glow);
+}
 
-    .modal.show { display: flex; }
-
-    .modal img {
-      max-width: 90vw;
-      max-height: 90vh;
-      border-radius: 18px;
-      box-shadow: 0 0 40px var(--glow);
-    }
-
-    .close {
-      position: absolute;
-      top: 20px;
-      right: 26px;
-      font-size: 34px;
-      color: white;
-      cursor: pointer;
-    }
-  </style>
+.close{
+  position:absolute;
+  top:20px;
+  right:28px;
+  font-size:34px;
+  color:white;
+  cursor:pointer;
+}
+</style>
 </head>
 
 <body>
-    <h6 style="color:red;text-align:center;">DEBUG VERSION 2 — IF YOU SEE THIS, DEPLOY WORKED</h6>
 
-  <div id="stars"></div>
+<audio id="bgMusic" loop>
+  <source src="https://www.bensound.com/bensound-music/bensound-love.mp3">
+</audio>
 
-  <audio id="bgMusic" loop>
-    <source src="https://www.bensound.com/bensound-music/bensound-love.mp3" type="audio/mp3">
-  </audio>
+<main class="card">
+  <h1>Sruthi, will you be my Valentine? 💕</h1>
 
-  <main class="card">
-    <h1>Sruthi, will you be my Valentine? 💕</h1>
-
-    <div class="button-zone" id="zone">
-      <button id="yesBtn">Yes</button>
-      <button id="noBtn">No</button>
-    </div>
-
-    <section class="result" id="result">
-      <p id="loveText"></p>
-
-      <div class="gallery">
-        <img src="./photos/photo-1.jpeg">
-        <img src="./photos/photo-2.jpeg">
-        <img src="./photos/photo-3.jpeg">
-        <img src="./photos/photo-4.jpeg">
-        <img src="./photos/photo-5.jpeg">
-        <img src="./photos/photo-6.jpeg">
-        <img src="./photos/photo-7.jpeg">
-        <img src="./photos/photo-8.jpeg">
-        <img src="./photos/photo-9.jpeg">
-        <img src="./photos/photo-10.jpeg">
-      </div>
-    </section>
-  </main>
-
-  <!-- Modal -->
-  <div class="modal" id="imgModal">
-    <span class="close">&times;</span>
-    <img id="modalImg">
+  <div class="button-zone" id="zone">
+    <button id="yesBtn">Yes</button>
+    <button id="noBtn">No</button>
   </div>
 
-  <script>
-    const yesBtn = document.getElementById("yesBtn");
-    const noBtn = document.getElementById("noBtn");
-    const zone = document.getElementById("zone");
-    const result = document.getElementById("result");
-    const music = document.getElementById("bgMusic");
+  <section class="result" id="result">
+    <p id="loveText"></p>
 
-    const message =
-      "You just made me the happiest person 💖\n" +
-      "Every moment with you means everything to me.\n\n" +
-      "Happy Valentine’s Day, Sruthi ❤️";
+    <div class="gallery">
+      <img src="./photos/photo-1.jpeg">
+      <img src="./photos/photo-2.jpeg">
+      <img src="./photos/photo-3.jpeg">
+      <img src="./photos/photo-4.jpeg">
+      <img src="./photos/photo-5.jpeg">
+      <img src="./photos/photo-6.jpeg">
+      <img src="./photos/photo-7.jpeg">
+      <img src="./photos/photo-8.jpeg">
+      <img src="./photos/photo-9.jpeg">
+      <img src="./photos/photo-10.jpeg">
+    </div>
+  </section>
+</main>
 
-    function typeMessage(el, text) {
-      let i = 0;
-      el.innerHTML = "";
-      const t = setInterval(() => {
-        el.innerHTML += text[i] === "\n" ? "<br>" : text[i];
-        if (++i >= text.length) clearInterval(t);
-      }, 40);
-    }
+<div class="modal" id="imgModal">
+  <span class="close">&times;</span>
+  <img id="modalImg">
+</div>
 
-    yesBtn.onclick = () => {
-      zone.style.display = "none";
-      result.classList.add("show");
-      music.play();
-      typeMessage(document.getElementById("loveText"), message);
-      confetti({ particleCount: 260, spread: 140, origin: { y: .6 } });
-      startSlideshow();
-    };
+<script>
+const yesBtn=document.getElementById("yesBtn");
+const noBtn=document.getElementById("noBtn");
+const zone=document.getElementById("zone");
+const result=document.getElementById("result");
+const music=document.getElementById("bgMusic");
 
-    zone.onpointermove = e => {
-      const b = noBtn.getBoundingClientRect();
-      if (Math.hypot(b.left - e.clientX, b.top - e.clientY) < 120) {
-        noBtn.style.left = Math.random() * 65 + "%";
-        noBtn.style.top = Math.random() * 65 + "%";
-      }
-    };
+const msg="You just made me the happiest person 💖<br>Happy Valentine’s Day, Sruthi ❤️";
 
-    /* Slideshow */
-    function startSlideshow() {
-      const imgs = document.querySelectorAll(".gallery img");
-      let i = 0;
-      setInterval(() => {
-        imgs.forEach(img => img.classList.remove("active"));
-        imgs[i].classList.add("active");
-        i = (i + 1) % imgs.length;
-      }, 3000);
-    }
+function typeText(el,text){
+  let i=0;el.innerHTML="";
+  const t=setInterval(()=>{
+    el.innerHTML+=text[i++]||"";
+    if(i>=text.length)clearInterval(t);
+  },40);
+}
 
-    /* Modal */
-    const modal = document.getElementById("imgModal");
-    const modalImg = document.getElementById("modalImg");
-    document.querySelectorAll(".gallery img").forEach(img => {
-      img.onclick = () => {
-        modal.classList.add("show");
-        modalImg.src = img.src;
-      };
-    });
-    document.querySelector(".close").onclick = () => modal.classList.remove("show");
-    modal.onclick = e => e.target === modal && modal.classList.remove("show");
-  </script>
+yesBtn.onclick=()=>{
+  zone.style.display="none";
+  result.classList.add("show");
+  music.play();
+  typeText(document.getElementById("loveText"),msg);
+  confetti({particleCount:300,spread:140,origin:{y:.6}});
+  startSlideshow();
+};
+
+zone.onpointermove=e=>{
+  const b=noBtn.getBoundingClientRect();
+  if(Math.hypot(b.left-e.clientX,b.top-e.clientY)<120){
+    noBtn.style.left=Math.random()*65+"%";
+    noBtn.style.top=Math.random()*65+"%";
+  }
+};
+
+function startSlideshow(){
+  const imgs=document.querySelectorAll(".gallery img");
+  let i=0;
+  setInterval(()=>{
+    imgs.forEach(im=>im.classList.remove("active"));
+    imgs[i].classList.add("active");
+    i=(i+1)%imgs.length;
+  },2500);
+}
+
+/* MODAL */
+const modal=document.getElementById("imgModal");
+const modalImg=document.getElementById("modalImg");
+document.querySelectorAll(".gallery img").forEach(img=>{
+  img.onclick=()=>{
+    modal.classList.add("show");
+    modalImg.src=img.src;
+  };
+});
+document.querySelector(".close").onclick=()=>modal.classList.remove("show");
+modal.onclick=e=>e.target===modal&&modal.classList.remove("show");
+</script>
+
 </body>
 </html>
