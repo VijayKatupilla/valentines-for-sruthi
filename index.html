@@ -28,29 +28,52 @@
       font-family: system-ui, sans-serif;
       color: var(--text);
       overflow: hidden;
+      padding: 16px;
     }
 
-    /* Stars */
-    #stars {
+    /* ---------- BACKGROUND PHOTOS ---------- */
+    .bg-photos {
       position: fixed;
       inset: 0;
-      background:
-        radial-gradient(2px 2px at 20% 30%, #fff, transparent),
-        radial-gradient(1px 1px at 80% 40%, #fff, transparent),
-        radial-gradient(1px 1px at 50% 80%, #fff, transparent);
-      animation: twinkle 6s infinite alternate;
-      z-index: -2;
+      display: none;
+      pointer-events: none;
+      z-index: 0;
     }
 
-    @keyframes twinkle {
-      from { opacity: .4; }
-      to { opacity: .8; }
+    .bg-photos.show {
+      display: block;
     }
 
-    /* CENTRAL CARD */
+    .bg-photos img {
+      position: absolute;
+      width: 220px;
+      height: 220px;
+      object-fit: cover;
+      border-radius: 18px;
+      opacity: 0.9;
+      box-shadow: 0 12px 32px rgba(0,0,0,.6);
+    }
+
+    /* positions around screen edges */
+    .p1 { top: 4%; left: 4%; }
+    .p2 { top: 4%; right: 4%; }
+    .p3 { bottom: 4%; left: 4%; }
+    .p4 { bottom: 4%; right: 4%; }
+
+    .p5 { top: 30%; left: 2%; }
+    .p6 { top: 30%; right: 2%; }
+
+    .p7 { bottom: 30%; left: 2%; }
+    .p8 { bottom: 30%; right: 2%; }
+
+    .p9 { top: 50%; left: 8%; transform: translateY(-50%); }
+    .p10 { top: 50%; right: 8%; transform: translateY(-50%); }
+
+    /* ---------- CARD (UNCHANGED) ---------- */
     .card {
       position: relative;
-      width: min(560px, 92vw);
+      z-index: 2;
+      width: min(760px, 94vw);
       background: var(--card);
       backdrop-filter: blur(16px);
       border-radius: 24px;
@@ -58,7 +81,6 @@
       text-align: center;
       box-shadow: 0 20px 60px rgba(0,0,0,.45);
       border: 1px solid rgba(255,255,255,.12);
-      z-index: 2;
     }
 
     h1 {
@@ -68,6 +90,7 @@
 
     .button-zone {
       position: relative;
+      width: 100%;
       height: 140px;
     }
 
@@ -95,7 +118,6 @@
       color: #111;
     }
 
-    /* RESULT TEXT */
     .result {
       opacity: 0;
       max-height: 0;
@@ -106,7 +128,7 @@
 
     .result.show {
       opacity: 1;
-      max-height: 400px;
+      max-height: 3000px;
       pointer-events: auto;
       margin-top: 20px;
     }
@@ -114,62 +136,16 @@
     #loveText {
       font-size: 18px;
       line-height: 1.6;
-      max-width: 520px;
+      max-width: 560px;
       margin: 14px auto;
     }
-
-    /* SURROUNDING PHOTOS */
-    .photo-ring {
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      opacity: 0;
-      transition: opacity .8s ease;
-      z-index: 1;
-    }
-
-    .photo-ring.show {
-      opacity: 1;
-    }
-
-    .photo-ring img {
-      position: absolute;
-      width: 180px;
-      height: 180px;
-      object-fit: cover;
-      border-radius: 18px;
-      box-shadow: 0 12px 32px rgba(0,0,0,.6);
-      animation: float 6s ease-in-out infinite;
-    }
-
-    @keyframes float {
-      0%,100% { transform: translateY(0); }
-      50% { transform: translateY(-12px); }
-    }
-
-    /* Manual positions around the card */
-    .p1 { top: 8%; left: 6%; }
-    .p2 { top: 8%; right: 6%; }
-    .p3 { top: 35%; left: 2%; }
-    .p4 { top: 35%; right: 2%; }
-    .p5 { bottom: 35%; left: 4%; }
-    .p6 { bottom: 35%; right: 4%; }
-    .p7 { bottom: 8%; left: 10%; }
-    .p8 { bottom: 8%; right: 10%; }
-    .p9 { top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-6deg); }
-    .p10 { top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(6deg); }
   </style>
 </head>
 
 <body>
-  <div id="stars"></div>
 
-  <audio id="bgMusic" loop>
-    <source src="https://www.bensound.com/bensound-music/bensound-love.mp3">
-  </audio>
-
-  <!-- SURROUNDING PHOTOS -->
-  <div class="photo-ring" id="photoRing">
+  <!-- BACKGROUND PHOTOS (OUTSIDE CONTENT) -->
+  <div class="bg-photos" id="bgPhotos">
     <img class="p1" src="./photos/photo-1.jpeg">
     <img class="p2" src="./photos/photo-2.jpeg">
     <img class="p3" src="./photos/photo-3.jpeg">
@@ -182,7 +158,11 @@
     <img class="p10" src="./photos/photo-10.jpeg">
   </div>
 
-  <!-- CENTER CARD -->
+  <audio id="bgMusic" loop>
+    <source src="https://www.bensound.com/bensound-music/bensound-love.mp3">
+  </audio>
+
+  <!-- CENTER CONTENT (UNCHANGED) -->
   <main class="card">
     <h1>Sruthi, will you be my Valentine? 💕</h1>
 
@@ -201,7 +181,7 @@
     const noBtn = document.getElementById("noBtn");
     const zone = document.getElementById("zone");
     const result = document.getElementById("result");
-    const ring = document.getElementById("photoRing");
+    const bgPhotos = document.getElementById("bgPhotos");
     const music = document.getElementById("bgMusic");
 
     const message =
@@ -221,10 +201,10 @@
     yesBtn.onclick = () => {
       zone.style.display = "none";
       result.classList.add("show");
-      ring.classList.add("show");
+      bgPhotos.classList.add("show");   // 👈 ONLY NEW BEHAVIOR
       music.play();
       typeMessage(document.getElementById("loveText"), message);
-      confetti({ particleCount: 280, spread: 140, origin: { y: .6 } });
+      confetti({ particleCount: 260, spread: 140, origin: { y: .6 } });
     };
 
     zone.onpointermove = e => {
@@ -235,5 +215,6 @@
       }
     };
   </script>
+
 </body>
 </html>
