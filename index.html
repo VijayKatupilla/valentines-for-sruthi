@@ -3,18 +3,20 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>Will you be my Valentine?</title>
+  <title>Sruthi ❤️ Valentine</title>
 
   <!-- Confetti -->
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
 
   <style>
     :root {
-      --bg1: #ffd6e7;
-      --bg2: #ffeef6;
-      --card: #ffffffcc;
-      --yes: #ff3b7a;
-      --yesHover: #ff1f68;
+      --bg1: #0b0f2a;
+      --bg2: #1a1f4d;
+      --card: rgba(255,255,255,0.08);
+      --text: #f9fafb;
+      --yes: #ff4d8d;
+      --yesHover: #ff2f78;
+      --glow: rgba(255,77,141,.6);
     }
 
     * { box-sizing: border-box; }
@@ -26,39 +28,50 @@
       place-items: center;
       background: radial-gradient(circle at top, var(--bg2), var(--bg1));
       font-family: system-ui, sans-serif;
+      color: var(--text);
       overflow: hidden;
       padding: 16px;
     }
 
-    #confettiCanvas {
+    #stars {
       position: fixed;
       inset: 0;
-      width: 100vw;
-      height: 100vh;
-      pointer-events: none;
-      z-index: 9999;
+      background-image:
+        radial-gradient(2px 2px at 20% 30%, #fff, transparent),
+        radial-gradient(2px 2px at 80% 40%, #fff, transparent),
+        radial-gradient(1px 1px at 50% 80%, #fff, transparent),
+        radial-gradient(1px 1px at 10% 60%, #fff, transparent);
+      animation: twinkle 6s infinite alternate;
+      z-index: -1;
+    }
+
+    @keyframes twinkle {
+      from { opacity: .4; }
+      to { opacity: .8; }
     }
 
     .card {
       width: min(720px, 92vw);
       padding: 26px 22px;
       background: var(--card);
-      backdrop-filter: blur(10px);
-      border-radius: 22px;
+      backdrop-filter: blur(16px);
+      border-radius: 24px;
       text-align: center;
-      box-shadow: 0 18px 60px rgba(0,0,0,.15);
+      box-shadow:
+        0 0 40px rgba(255,77,141,.15),
+        0 20px 60px rgba(0,0,0,.45);
+      border: 1px solid rgba(255,255,255,.12);
     }
 
     .art {
       width: min(260px, 80vw);
-      margin: 0 auto 10px;
-      display: block;
-      filter: drop-shadow(0 10px 14px rgba(0,0,0,.12));
+      margin: 0 auto 12px;
+      filter: drop-shadow(0 10px 20px rgba(0,0,0,.6));
     }
 
     h1 {
       font-size: clamp(26px, 4vw, 44px);
-      margin: 12px 0 18px;
+      margin-bottom: 18px;
     }
 
     .button-zone {
@@ -66,7 +79,6 @@
       width: min(520px, 92%);
       height: 150px;
       margin: 0 auto;
-      touch-action: none;
     }
 
     button {
@@ -79,8 +91,7 @@
       border-radius: 999px;
       border: none;
       cursor: pointer;
-      box-shadow: 0 10px 24px rgba(0,0,0,.14);
-      user-select: none;
+      box-shadow: 0 10px 24px rgba(0,0,0,.3);
       transition: transform .12s ease, background .12s ease;
     }
 
@@ -95,6 +106,7 @@
     #noBtn {
       left: 62%;
       background: #e5e7eb;
+      color: #111;
     }
 
     .hint {
@@ -106,12 +118,11 @@
     .result {
       display: none;
       margin-top: 18px;
-      animation: pop .35s ease;
+      animation: pop .4s ease;
     }
 
-    .result h2 {
-      font-size: clamp(30px, 4.5vw, 46px);
-      margin: 10px 0;
+    .result.show {
+      display: block;
     }
 
     #loveText {
@@ -119,6 +130,35 @@
       max-width: 520px;
       margin: 12px auto;
       line-height: 1.6;
+    }
+
+    .gallery {
+      margin-top: 22px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 12px;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all .6s ease;
+    }
+
+    .result.show .gallery {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .gallery img {
+      width: 100%;
+      aspect-ratio: 1/1;
+      object-fit: cover;
+      border-radius: 16px;
+      box-shadow: 0 8px 24px rgba(0,0,0,.5);
+      transition: transform .3s ease, box-shadow .3s ease;
+    }
+
+    .gallery img:hover {
+      transform: scale(1.08);
+      box-shadow: 0 0 24px var(--glow);
     }
 
     @keyframes pop {
@@ -129,7 +169,7 @@
 </head>
 
 <body>
-  <canvas id="confettiCanvas"></canvas>
+  <div id="stars"></div>
 
   <audio id="bgMusic" loop>
     <source src="https://www.bensound.com/bensound-music/bensound-love.mp3" type="audio/mp3">
@@ -145,8 +185,8 @@
           <stop offset="1" stop-color="#f2a97b"/>
         </linearGradient>
         <linearGradient id="heart" x1="0" x2="1">
-          <stop offset="0" stop-color="#ff4d7d"/>
-          <stop offset="1" stop-color="#ff1f68"/>
+          <stop offset="0" stop-color="#ff4d8d"/>
+          <stop offset="1" stop-color="#ff2f78"/>
         </linearGradient>
       </defs>
       <path d="M250 50 C250 33 270 25 282 38
@@ -173,7 +213,21 @@
     <section class="result" id="result">
       <h2>YAY! 🎉</h2>
       <p id="loveText"></p>
+
+      <div class="gallery">
+        <img src="photos/photo1.jpg" alt="Us ❤️">
+        <img src="photos/photo2.jpg" alt="Memories">
+        <img src="photos/photo3.jpg" alt="Together">
+        <img src="photos/photo4.jpg" alt="Forever">
+        <img src="photos/photo5.jpg" alt="Forever">
+        <img src="photos/photo6.jpg" alt="Forever">
+        <img src="photos/photo7.jpg" alt="Forever">
+        <img src="photos/photo8.jpg" alt="Forever">
+        <img src="photos/photo9.jpg" alt="Forever">
+        <img src="photos/photo10.jpg" alt="Forever">
+      </div>
     </section>
+
   </main>
 
   <script>
@@ -186,7 +240,7 @@
 
     const message =
       "You just made me the happiest person 💖\n" +
-      "Every moment with you feels special.\n" +
+      "Every moment with you feels magical.\n" +
       "Thank you for being you.\n\n" +
       "Happy Valentine’s Day, Sruthi ❤️";
 
@@ -203,15 +257,18 @@
     yesBtn.addEventListener("click", () => {
       zone.style.display = "none";
       hint.style.display = "none";
-      result.style.display = "block";
+      result.classList.add("show");
+
       music.play();
       typeMessage(document.getElementById("loveText"), message);
-      confetti({ particleCount: 250, spread: 140, origin: { y: 0.6 } });
+
+      confetti({ particleCount: 260, spread: 140, origin: { y: 0.6 } });
 
       setTimeout(() => {
         const ps = document.createElement("p");
-        ps.innerHTML = "P.S. I owe you a date 😘";
+        ps.innerHTML = "P.S. I owe you a candle-light date 🌙✨";
         ps.style.fontWeight = "700";
+        ps.style.marginTop = "12px";
         result.appendChild(ps);
       }, 5000);
     });
