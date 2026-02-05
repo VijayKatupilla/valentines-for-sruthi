@@ -3,128 +3,163 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Happy Valentine’s Day Sruthi ❤️</title>
+<title>Sruthi ❤️ Valentine</title>
 
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
 
 <style>
 :root {
-  --accent: #ff4d8d;
-  --text: #ffffff;
+  --bg1:#0b0f2a;
+  --bg2:#1a1f4d;
+  --card:rgba(255,255,255,.08);
+  --accent:#ff4d8d;
+  --glow:rgba(255,77,141,.7);
+  --text:#f9fafb;
 }
 
-* { box-sizing: border-box; }
+*{box-sizing:border-box}
 
-body {
-  margin: 0;
-  font-family: system-ui, sans-serif;
-  background: black;
-  overflow: hidden;
+body{
+  margin:0;
+  min-height:100vh;
+  display:grid;
+  place-items:center;
+  background:radial-gradient(circle at top,var(--bg2),var(--bg1));
+  font-family:system-ui,sans-serif;
+  color:var(--text);
+  overflow-x:hidden;
+  padding:16px;
 }
 
-/* ---------- QUESTION SCREEN ---------- */
-.screen {
-  position: fixed;
-  inset: 0;
-  display: grid;
-  place-items: center;
-  background: radial-gradient(circle at top, #1a1f4d, #0b0f2a);
-  z-index: 10;
+.card{
+  width:min(820px,96vw);
+  background:var(--card);
+  backdrop-filter:blur(18px);
+  border-radius:26px;
+  padding:28px;
+  text-align:center;
+  box-shadow:0 30px 80px rgba(0,0,0,.6);
+  border:1px solid rgba(255,255,255,.12);
 }
 
-.card {
-  background: rgba(255,255,255,.08);
-  backdrop-filter: blur(18px);
-  border-radius: 26px;
-  padding: 32px 28px;
-  text-align: center;
-  box-shadow: 0 30px 80px rgba(0,0,0,.6);
-  color: var(--text);
+h1{
+  font-size:clamp(26px,4vw,44px);
+  margin-bottom:22px;
 }
 
-h1 {
-  font-size: clamp(28px, 4vw, 44px);
-  margin-bottom: 30px;
+.button-zone{
+  position:relative;
+  height:140px;
 }
 
-.buttons {
-  position: relative;
-  height: 140px;
+button{
+  position:absolute;
+  top:50%;
+  transform:translateY(-50%);
+  padding:16px 28px;
+  font-size:18px;
+  font-weight:700;
+  border-radius:999px;
+  border:none;
+  cursor:pointer;
+  box-shadow:0 10px 28px rgba(0,0,0,.4);
 }
 
-button {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  padding: 16px 28px;
-  font-size: 18px;
-  font-weight: 700;
-  border-radius: 999px;
-  border: none;
-  cursor: pointer;
+#yesBtn{
+  left:20%;
+  background:var(--accent);
+  color:white;
 }
 
-#yesBtn {
-  left: 20%;
-  background: var(--accent);
-  color: white;
+#noBtn{
+  left:60%;
+  background:#e5e7eb;
+  color:#111;
 }
 
-#noBtn {
-  left: 60%;
-  background: #e5e7eb;
-  color: #111;
+.result{
+  opacity:0;
+  max-height:0;
+  overflow:hidden;
+  transition:all .6s ease;
+  pointer-events:none;
 }
 
-/* ---------- SLIDESHOW ---------- */
-#slideshow {
-  position: fixed;
-  inset: 0;
-  display: none;
+.result.show{
+  opacity:1;
+  max-height:5000px;
+  pointer-events:auto;
+  margin-top:20px;
 }
 
-#slideshow.show {
-  display: block;
+#loveText{
+  font-size:18px;
+  line-height:1.6;
+  max-width:600px;
+  margin:14px auto;
 }
 
-.slide {
-  position: absolute;
-  inset: 0;
-  background-size: cover;        /* 🔥 fills screen */
-  background-position: center;   /* 🔥 centers image */
-  background-repeat: no-repeat;
-  opacity: 0;
-  transition: opacity 1.2s ease;
+/* GALLERY */
+.gallery{
+  margin-top:24px;
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(130px,1fr));
+  gap:14px;
 }
 
-.slide.active {
-  opacity: 1;
+.gallery img{
+  width:100%;
+  aspect-ratio:1/1;
+  object-fit:cover;
+  border-radius:18px;
+  cursor:pointer;
+  opacity:0;
+  transform:scale(.7) rotate(-5deg);
+  animation:fadeUp .8s ease forwards;
+  box-shadow:0 10px 26px rgba(0,0,0,.6);
+  transition:transform .4s ease;
 }
 
-/* Romantic overlay so text is always visible */
-.slide::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    to bottom,
-    rgba(0,0,0,.35),
-    rgba(0,0,0,.55)
-  );
+.gallery img:nth-child(odd){animation-delay:.2s}
+.gallery img:nth-child(even){animation-delay:.6s}
+
+.gallery img.active{
+  outline:4px solid var(--accent);
+  transform:scale(1.15) rotate(2deg);
+  z-index:2;
 }
 
-/* ---------- VALENTINE TEXT ---------- */
-.caption {
-  position: fixed;
-  bottom: 30px;
-  width: 100%;
-  text-align: center;
-  color: var(--text);
-  font-size: clamp(20px, 3vw, 28px);
-  font-weight: 600;
-  letter-spacing: .5px;
-  text-shadow: 0 4px 20px rgba(0,0,0,.9);
-  z-index: 5;
+@keyframes fadeUp{
+  to{opacity:1;transform:scale(1) rotate(0)}
+}
+
+/* MODAL */
+.modal{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.92);
+  z-index:9999;
+  justify-content:center;
+  align-items:center;
+}
+
+.modal.show{display:flex}
+
+.modal img{
+  max-width:92vw;
+  max-height:92vh;
+  border-radius:20px;
+  box-shadow:0 0 50px var(--glow);
+}
+
+.close{
+  position:absolute;
+  top:20px;
+  right:28px;
+  font-size:34px;
+  color:white;
+  cursor:pointer;
 }
 </style>
 </head>
@@ -135,74 +170,92 @@ button {
   <source src="https://www.bensound.com/bensound-music/bensound-love.mp3">
 </audio>
 
-<!-- QUESTION SCREEN -->
-<div class="screen" id="question">
-  <div class="card">
-    <h1>Sruthi, will you be my Valentine? 💕</h1>
-    <div class="buttons" id="zone">
-      <button id="yesBtn">Yes</button>
-      <button id="noBtn">No</button>
+<main class="card">
+  <h1>Sruthi, will you be my Valentine? 💕</h1>
+
+  <div class="button-zone" id="zone">
+    <button id="yesBtn">Yes</button>
+    <button id="noBtn">No</button>
+  </div>
+
+  <section class="result" id="result">
+    <p id="loveText"></p>
+
+    <div class="gallery">
+      <img src="./photos/photo-1.jpeg">
+      <img src="./photos/photo-2.jpeg">
+      <img src="./photos/photo-3.jpeg">
+      <img src="./photos/photo-4.jpeg">
+      <img src="./photos/photo-5.jpeg">
+      <img src="./photos/photo-6.jpeg">
+      <img src="./photos/photo-7.jpeg">
+      <img src="./photos/photo-8.jpeg">
+      <img src="./photos/photo-9.jpeg">
+      <img src="./photos/photo-10.jpeg">
     </div>
-  </div>
-</div>
+  </section>
+</main>
 
-<!-- FULL SCREEN SLIDESHOW -->
-<div id="slideshow">
-  <div class="slide" style="background-image:url('./photos/photo-1.jpeg')"></div>
-  <div class="slide" style="background-image:url('./photos/photo-2.jpeg')"></div>
-  <div class="slide" style="background-image:url('./photos/photo-3.jpeg')"></div>
-  <div class="slide" style="background-image:url('./photos/photo-4.jpeg')"></div>
-  <div class="slide" style="background-image:url('./photos/photo-5.jpeg')"></div>
-  <div class="slide" style="background-image:url('./photos/photo-6.jpeg')"></div>
-  <div class="slide" style="background-image:url('./photos/photo-7.jpeg')"></div>
-  <div class="slide" style="background-image:url('./photos/photo-8.jpeg')"></div>
-  <div class="slide" style="background-image:url('./photos/photo-9.jpeg')"></div>
-  <div class="slide" style="background-image:url('./photos/photo-10.jpeg')"></div>
-
-  <div class="caption">
-    Happy Valentine’s Day, Sruthi ❤️
-  </div>
+<div class="modal" id="imgModal">
+  <span class="close">&times;</span>
+  <img id="modalImg">
 </div>
 
 <script>
-const yesBtn = document.getElementById("yesBtn");
-const noBtn = document.getElementById("noBtn");
-const zone = document.getElementById("zone");
-const question = document.getElementById("question");
-const slideshow = document.getElementById("slideshow");
-const slides = document.querySelectorAll(".slide");
-const music = document.getElementById("bgMusic");
+const yesBtn=document.getElementById("yesBtn");
+const noBtn=document.getElementById("noBtn");
+const zone=document.getElementById("zone");
+const result=document.getElementById("result");
+const music=document.getElementById("bgMusic");
 
-let index = 0;
-slides[0].classList.add("active");
+const msg="You just made me the happiest person 💖<br>Happy Valentine’s Day, Sruthi ❤️";
 
-/* YES CLICK */
-yesBtn.onclick = () => {
-  question.style.display = "none";
-  slideshow.classList.add("show");
+function typeText(el,text){
+  let i=0;el.innerHTML="";
+  const t=setInterval(()=>{
+    el.innerHTML+=text[i++]||"";
+    if(i>=text.length)clearInterval(t);
+  },40);
+}
+
+yesBtn.onclick=()=>{
+  zone.style.display="none";
+  result.classList.add("show");
   music.play();
-  confetti({ particleCount: 300, spread: 160, origin: { y: 0.6 } });
-  setInterval(nextSlide, 3500);
+  typeText(document.getElementById("loveText"),msg);
+  confetti({particleCount:300,spread:140,origin:{y:.6}});
+  startSlideshow();
 };
 
-/* NO RUNS AWAY */
-zone.onpointermove = e => {
-  const b = noBtn.getBoundingClientRect();
-  if (Math.hypot(b.left - e.clientX, b.top - e.clientY) < 120) {
-    noBtn.style.left = Math.random() * 65 + "%";
-    noBtn.style.top = Math.random() * 65 + "%";
+zone.onpointermove=e=>{
+  const b=noBtn.getBoundingClientRect();
+  if(Math.hypot(b.left-e.clientX,b.top-e.clientY)<120){
+    noBtn.style.left=Math.random()*65+"%";
+    noBtn.style.top=Math.random()*65+"%";
   }
 };
 
-/* SLIDES */
-function nextSlide() {
-  slides[index].classList.remove("active");
-  index = (index + 1) % slides.length;
-  slides[index].classList.add("active");
+function startSlideshow(){
+  const imgs=document.querySelectorAll(".gallery img");
+  let i=0;
+  setInterval(()=>{
+    imgs.forEach(im=>im.classList.remove("active"));
+    imgs[i].classList.add("active");
+    i=(i+1)%imgs.length;
+  },2500);
 }
 
-/* CLICK ANYWHERE → NEXT PHOTO */
-slideshow.onclick = nextSlide;
+/* MODAL */
+const modal=document.getElementById("imgModal");
+const modalImg=document.getElementById("modalImg");
+document.querySelectorAll(".gallery img").forEach(img=>{
+  img.onclick=()=>{
+    modal.classList.add("show");
+    modalImg.src=img.src;
+  };
+});
+document.querySelector(".close").onclick=()=>modal.classList.remove("show");
+modal.onclick=e=>e.target===modal&&modal.classList.remove("show");
 </script>
 
 </body>
