@@ -79,10 +79,21 @@
       opacity: 1;
     }
 
+    .photo-ring {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: min(1200px, 140vw);
+      height: min(1200px, 140vw);
+      transform: translate(-50%, -50%);
+    }
+
     .photo {
       position: absolute;
-      width: clamp(130px, 16vw, 190px);
-      height: clamp(130px, 16vw, 190px);
+      left: 50%;
+      top: 50%;
+      width: clamp(120px, 14vw, 180px);
+      height: clamp(120px, 14vw, 180px);
       object-fit: cover;
       border-radius: 18px;
       box-shadow:
@@ -91,23 +102,25 @@
       filter: saturate(1.05) contrast(1.04);
       transition: transform .4s ease, opacity .4s ease;
       opacity: 0.92;
+      --radius: clamp(360px, 42vw, 460px);
+      transform: rotate(var(--angle)) translateX(var(--radius)) rotate(calc(-1 * var(--angle)));
     }
 
-    /* positions around the card, leaving center clear */
-    .p1  { top: 4%; left: 18%; transform: rotate(-6deg); }
-    .p2  { top: 3%; left: 42%; transform: rotate(4deg); }
-    .p3  { top: 4%; left: 66%; transform: rotate(-3deg); }
-
-    .p4  { top: 26%; left: 4%; transform: rotate(-8deg); }
-    .p5  { top: 55%; left: 6%; transform: rotate(7deg); }
-
-    .p6  { top: 26%; right: 6%; transform: rotate(6deg); }
-    .p7  { top: 54%; right: 5%; transform: rotate(-7deg); }
-
-    .p8  { bottom: 7%; left: 14%; transform: rotate(5deg); }
-    .p9  { bottom: 6%; left: 42%; transform: rotate(-4deg); }
-    .p10 { bottom: 7%; left: 68%; transform: rotate(6deg); }
-    .p11 { top: 68%; right: 32%; transform: rotate(-5deg); }
+    /* angles to spread evenly around */
+    .p1  { --angle: -80deg; }
+    .p2  { --angle: -46deg; }
+    .p3  { --angle: -10deg; }
+    .p4  { --angle: 22deg; }
+    .p5  { --angle: 58deg; }
+    .p6  { --angle: 94deg; }
+    .p7  { --angle: 130deg; }
+    .p8  { --angle: 166deg; }
+    .p9  { --angle: 202deg; }
+    .p10 { --angle: 238deg; }
+    .p11 { --angle: 274deg; }
+    .p12 { --angle: 310deg; }
+    .p13 { --angle: 146deg; }
+    .p14 { --angle: -140deg; }
 
     /* ---------------- CENTER CARD ---------------- */
     .card {
@@ -209,6 +222,23 @@
       margin-top: 20px;
     }
 
+    .result-content {
+      display: flex;
+      gap: 18px;
+      align-items: flex-start;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .card-photo {
+      width: clamp(180px, 30vw, 240px);
+      border-radius: 16px;
+      box-shadow:
+        0 10px 24px rgba(0,0,0,.35),
+        0 0 14px rgba(255,77,141,.2);
+      object-fit: cover;
+    }
+
     #loveText {
       font-size: 18px;
       line-height: 1.6;
@@ -221,21 +251,11 @@
       .photo {
         width: 120px;
         height: 120px;
+        --radius: clamp(240px, 36vw, 300px);
       }
 
-      /* hide side photos to keep space */
-      .p4, .p5, .p6, .p7 { display: none; }
-
-      /* tighten layout */
-      .p1 { top: 8%; left: 14%; }
-      .p2 { top: 8%; left: 44%; }
-      .p3 { top: 8%; left: 70%; }
-      .p12 { top: 8%; left: 90%; }
-      .p8 { bottom: 10%; left: 16%; }
-      .p9 { bottom: 10%; left: 44%; }
-      .p10 { bottom: 10%; left: 70%; }
-      .p13 { bottom: 10%; left: 90%; }
-    
+      /* trim a few to reduce clutter */
+      .p4, .p6 { display: none; }
 
       .card {
         margin-top: 120px;
@@ -249,22 +269,21 @@
 
   <!-- BACKGROUND PHOTOS -->
   <div class="photo-frame" id="photoFrame">
-    <div class="photo-grid">
+    <div class="photo-ring">
       <img class="photo p1"  src="./photos/photo-1.jpeg"  loading="lazy" decoding="async" alt="">
       <img class="photo p2"  src="./photos/photo-2.jpeg"  loading="lazy" decoding="async" alt="">
       <img class="photo p3"  src="./photos/photo-3.jpeg"  loading="lazy" decoding="async" alt="">
       <img class="photo p4"  src="./photos/photo-4.jpeg"  loading="lazy" decoding="async" alt="">
       <img class="photo p5"  src="./photos/photo-5.jpeg"  loading="lazy" decoding="async" alt="">
       <img class="photo p6"  src="./photos/photo-6.jpeg"  loading="lazy" decoding="async" alt="">
-      <img class="photo p7"  src="./photos/photo-11.jpeg" loading="lazy" decoding="async" alt="">
-      <img class="photo p8"  src="./photos/photo-12.jpeg" loading="lazy" decoding="async" alt="">
-      <img class="photo p9"  src="./photos/photo-13.jpeg" loading="lazy" decoding="async" alt="">
-      <img class="photo p10" src="./photos/photo-14.jpeg" loading="lazy" decoding="async" alt="">
-      <img class="photo p11" src="./photos/photo-15.jpeg" loading="lazy" decoding="async" alt="">
-      <img class="photo p12"  src="./photos/photo-7.jpeg"  loading="lazy" decoding="async" alt="">
-      <img class="photo p13"  src="./photos/photo-8.jpeg"  loading="lazy" decoding="async" alt="">
-      <img class="photo p14"  src="./photos/photo-9.jpeg"  loading="lazy" decoding="async" alt="">
-      <img class="photo p15"  src="./photos/photo-10.jpeg"  loading="lazy" decoding="async" alt="">
+      <img class="photo p7"  src="./photos/photo-7.jpeg"  loading="lazy" decoding="async" alt="">
+      <img class="photo p8"  src="./photos/photo-8.jpeg"  loading="lazy" decoding="async" alt="">
+      <img class="photo p9"  src="./photos/photo-9.jpeg"  loading="lazy" decoding="async" alt="">
+      <img class="photo p10" src="./photos/photo-10.jpeg" loading="lazy" decoding="async" alt="">
+      <img class="photo p11" src="./photos/photo-11.jpeg" loading="lazy" decoding="async" alt="">
+      <img class="photo p12" src="./photos/photo-12.jpeg" loading="lazy" decoding="async" alt="">
+      <img class="photo p13" src="./photos/photo-14.jpeg" loading="lazy" decoding="async" alt="">
+      <img class="photo p14" src="./photos/photo-15.jpeg" loading="lazy" decoding="async" alt="">
     </div>
   </div>
 
@@ -283,7 +302,10 @@
     </div>
 
     <section class="result" id="result" aria-live="polite">
-      <p id="loveText"></p>
+      <div class="result-content">
+        <img class="card-photo" src="./photos/photo-13.jpeg" loading="lazy" decoding="async" alt="">
+        <p id="loveText"></p>
+      </div>
     </section>
   </main>
 
