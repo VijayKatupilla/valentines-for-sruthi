@@ -63,37 +63,23 @@
       opacity: .7;
     }
 
-    /* ---------------- BACKGROUND PHOTOS AROUND CARD ---------------- */
+    /* ---------------- BACKGROUND PHOTOS HEART ---------------- */
     .photo-frame {
       position: fixed;
       inset: 0;
       display: none;
       pointer-events: none;
-      z-index: 0;
+      z-index: 2;
       opacity: 0;
       transition: opacity .6s ease;
     }
 
-    .photo-frame.show {
-      display: block;
-      opacity: 1;
-    }
-
-    .photo-ring {
-      position: absolute;
-      left: 50%;
-      top: 50%;
-      width: min(1400px, 160vw);
-      height: min(1400px, 160vw);
-      transform: translate(-50%, -50%);
-    }
+    .photo-frame.show { display: block; opacity: 1; }
 
     .photo {
       position: absolute;
-      left: 50%;
-      top: 50%;
-      width: clamp(110px, 12vw, 170px);
-      height: clamp(110px, 12vw, 170px);
+      width: clamp(82px, 9vw, 122px);
+      height: clamp(82px, 9vw, 122px);
       object-fit: cover;
       border-radius: 18px;
       box-shadow:
@@ -102,39 +88,47 @@
       filter: saturate(1.05) contrast(1.04);
       transition: transform .4s ease, opacity .4s ease;
       opacity: 0.92;
-      --radius: clamp(440px, 50vw, 560px);
-      transform: rotate(var(--angle)) translateX(var(--radius)) rotate(calc(-1 * var(--angle)));
     }
 
-    /* angles to spread evenly around */
-    .p1  { --angle: -78deg; }
-    .p2  { --angle: -46deg; }
-    .p3  { --angle: -14deg; }
-    .p4  { --angle: 18deg; }
-    .p5  { --angle: 50deg; }
-    .p6  { --angle: 82deg; }
-    .p7  { --angle: 114deg; }
-    .p8  { --angle: 146deg; }
-    .p9  { --angle: 178deg; }
-    .p10 { --angle: 210deg; }
-    .p11 { --angle: 242deg; }
-    .p12 { --angle: 274deg; }
-    .p13 { --angle: 306deg; }
-    .p14 { --angle: 338deg; }
+    /* heart silhouette positions (12 tiles) */
+    .p1  { top: 5%;  left: 38%; transform: rotate(-6deg); }
+    .p2  { top: 5%;  left: 62%; transform: rotate(6deg); }
+    .p3  { top: 17%; left: 26%; transform: rotate(-4deg); }
+    .p4  { top: 17%; left: 74%; transform: rotate(4deg); }
+    .p5  { top: 31%; left: 20%; transform: rotate(-6deg); }
+    .p6  { top: 31%; left: 80%; transform: rotate(6deg); }
+    .p7  { top: 47%; left: 26%; transform: rotate(-5deg); }
+    .p8  { top: 47%; left: 74%; transform: rotate(5deg); }
+    .p9  { top: 65%; left: 33%; transform: rotate(-3deg); }
+    .p10 { top: 65%; left: 67%; transform: rotate(3deg); }
+    .p11 { top: 85%; left: 50%; transform: rotate(0deg); }
+    
 
-    /* ---------------- CENTER CARD ---------------- */
+    /* ---------------- LOVE CARD MODAL ---------------- */
     .card {
-      position: relative;
-      z-index: 2;
-      width: min(700px, 92vw);
+      position: fixed;
+      left: 55%;
+      top: 45%;
+      transform: translate(-50%, -50%) scale(.94);
+      z-index: 4;
+      width: min(430px, 84vw);
       background: var(--card);
       backdrop-filter: blur(16px);
       border-radius: 26px;
-      padding: 30px 26px;
+      padding: 24px 20px;
       text-align: center;
       box-shadow: 0 22px 60px rgba(0,0,0,.45);
       border: 1px solid var(--card-border);
       overflow: hidden;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .35s ease, transform .35s ease;
+    }
+
+    .card.show {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translate(-50%, -50%) scale(1);
     }
 
     .card::before {
@@ -147,6 +141,69 @@
     }
 
     .card > * { position: relative; z-index: 1; }
+
+    /* content overlay for question/cta */
+    .content-layer {
+      position: fixed;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      z-index: 3;
+      pointer-events: none;
+    }
+
+    .content-box {
+      pointer-events: auto;
+      text-align: center;
+    }
+
+    /* center clickable photo */
+    .heart-center {
+      position: fixed;
+      left: 55%;
+      top: 45%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      display: none;
+      z-index: 3;
+    }
+
+    .heart-center img {
+      width: clamp(150px, 22vw, 250px);
+      border-radius: 18px;
+      box-shadow:
+        0 12px 26px rgba(0,0,0,.38),
+        0 0 16px rgba(255,77,141,.22);
+      object-fit: cover;
+    }
+
+    .heart-center .cta-wrap {
+      position: relative;
+      display: inline-block;
+    }
+
+    .center-cta {
+      position: absolute;
+      left: 40%;
+      bottom:30%;
+      transform: translate(-105%, 0);
+      padding: 6px 12px;
+      border-radius: 999px;
+      border: none;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      color: #fff;
+      font-weight: 700;
+      letter-spacing: 0.2px;
+      cursor: pointer;
+      box-shadow: 0 10px 24px rgba(255,77,141,.35);
+      transition: transform .2s ease, box-shadow .2s ease;
+    }
+
+    .center-cta:hover { transform: translate(-50%, -2px); box-shadow: 0 12px 30px rgba(255,77,141,.45); }
+    .center-cta:focus-visible {
+      outline: 3px solid rgba(255,77,141,.6);
+      outline-offset: 3px;
+    }
 
     h1 {
       font-size: clamp(26px, 4vw, 44px);
@@ -165,7 +222,7 @@
     .button-zone {
       position: relative;
       width: 100%;
-      height: 150px;
+      height: 130px;
     }
 
     button {
@@ -224,43 +281,61 @@
 
     .result-content {
       display: flex;
-      gap: 18px;
+      gap: 14px;
       align-items: flex-start;
       justify-content: center;
       flex-wrap: wrap;
     }
 
     .card-photo {
-      width: clamp(150px, 26vw, 190px);
+      width: clamp(140px, 24vw, 180px);
       border-radius: 14px;
       box-shadow:
-        0 10px 24px rgba(0,0,0,.35),
-        0 0 14px rgba(255,77,141,.2);
+        0 8px 20px rgba(0,0,0,.32),
+        0 0 12px rgba(255,77,141,.2);
       object-fit: cover;
     }
 
     #loveText {
       font-size: 18px;
       line-height: 1.6;
-      max-width: 480px;
+      max-width: 440px;
       margin: 14px auto;
     }
 
     /* ================= MOBILE FIX ================= */
     @media (max-width: 768px) {
       .photo {
-        width: 105px;
-        height: 105px;
-        --radius: clamp(260px, 38vw, 340px);
+        width: 64px;
+        height: 64px;
       }
 
-      /* trim a few to reduce clutter */
-      .p4, .p6 { display: none; }
+      /* trim a couple for breathing room */
+      .p5, .p6 { display: none; }
+
+      /* tighten heart positions */
+      .p1  { top: 7%;  left: 40%; }
+      .p2  { top: 7%;  left: 60%; }
+      .p3  { top: 19%; left: 28%; }
+      .p4  { top: 19%; left: 72%; }
+      .p7  { top: 50%; left: 28%; }
+      .p8  { top: 50%; left: 72%; }
+      .p9  { top: 64%; left: 40%; }
+      .p10 { top: 64%; left: 60%; }
+      .p11 { top: 76%; left: 46%; }
+      .p12 { top: 86%; left: 54%; }
+
+      .heart-center img { width: clamp(100px, 40vw, 140px); }
+      .center-cta { padding: 6px 12px; }
 
       .card {
-        margin-top: 120px;
-        margin-bottom: 120px;
+        width: min(360px, 92vw);
+        padding: 20px 16px;
+        margin-top: 100px;
+        margin-bottom: 100px;
       }
+
+      #loveText { max-width: 360px; }
     }
   </style>
 </head>
@@ -269,87 +344,84 @@
 
   <!-- BACKGROUND PHOTOS -->
   <div class="photo-frame" id="photoFrame">
-    <div class="photo-ring">
-      <img class="photo p1"  src="./photos/photo-1.jpeg"  loading="lazy" decoding="async" alt="">
-      <img class="photo p2"  src="./photos/photo-2.jpeg"  loading="lazy" decoding="async" alt="">
-      <img class="photo p3"  src="./photos/photo-3.jpeg"  loading="lazy" decoding="async" alt="">
-      <img class="photo p4"  src="./photos/photo-4.jpeg"  loading="lazy" decoding="async" alt="">
-      <img class="photo p5"  src="./photos/photo-5.jpeg"  loading="lazy" decoding="async" alt="">
-      <img class="photo p6"  src="./photos/photo-6.jpeg"  loading="lazy" decoding="async" alt="">
-      <img class="photo p7"  src="./photos/photo-7.jpeg"  loading="lazy" decoding="async" alt="">
-      <img class="photo p8"  src="./photos/photo-8.jpeg"  loading="lazy" decoding="async" alt="">
-      <img class="photo p9"  src="./photos/photo-9.jpeg"  loading="lazy" decoding="async" alt="">
-      <img class="photo p10" src="./photos/photo-10.jpeg" loading="lazy" decoding="async" alt="">
-      <img class="photo p11" src="./photos/photo-11.jpeg" loading="lazy" decoding="async" alt="">
-      <img class="photo p12" src="./photos/photo-12.jpeg" loading="lazy" decoding="async" alt="">
-      <img class="photo p13" src="./photos/photo-14.jpeg" loading="lazy" decoding="async" alt="">
-      <img class="photo p14" src="./photos/photo-15.jpeg" loading="lazy" decoding="async" alt="">
-    </div>
+    <img class="photo p1"  src="./photos/photo-2.jpeg"  loading="lazy" decoding="async" alt="Couple by Eiffel backdrop">
+    <img class="photo p2"  src="./photos/photo-4.jpeg"  loading="lazy" decoding="async" alt="Beach hug">
+    <img class="photo p3"  src="./photos/photo-5.jpeg"  loading="lazy" decoding="async" alt="Dinner selfie">
+    <img class="photo p4"  src="./photos/photo-6.jpeg"  loading="lazy" decoding="async" alt="Night city view">
+    <img class="photo p5"  src="./photos/photo-7.jpeg"  loading="lazy" decoding="async" alt="Casual close-up">
+    <img class="photo p6"  src="./photos/photo-8.jpeg"  loading="lazy" decoding="async" alt="Heart backdrop pose">
+    <img class="photo p7"  src="./photos/photo-12.jpeg" loading="lazy" decoding="async" alt="Holding hands moment">
+    <img class="photo p8"  src="./photos/photo-11.jpeg" loading="lazy" decoding="async" alt="Together with big heart">
+    <img class="photo p9"  src="./photos/photo-14.jpeg" loading="lazy" decoding="async" alt="Vegas skyline heart">
+    <img class="photo p10" src="./photos/photo-15.jpeg" loading="lazy" decoding="async" alt="Heart balloon pose">
+    <img class="photo p11" src="./photos/photo-5.jpeg"  loading="lazy" decoding="async" alt="Dinner selfie repeat">
+    
   </div>
 
   <audio id="bgMusic" loop preload="auto">
     <source src="https://www.bensound.com/bensound-music/bensound-love.mp3">
   </audio>
 
-  <!-- CENTER CONTENT -->
-  <main class="card">
-    <h1>Sruthi, will you be my Valentine? &#128149;</h1>
-    <p class="tagline">I made this little page to ask you properly&mdash;stay for the surprise?</p>
+  <!-- QUESTION LAYER -->
+  <div class="content-layer" id="questionLayer">
+    <div class="content-box">
+      <h1>Sruthi, will you be my Valentine? &#128149;</h1>
+      <p class="tagline">I made this little page to ask you properly&mdash;stay for the surprise?</p>
 
-    <div class="button-zone" id="zone">
-      <button id="yesBtn">Yes</button>
-      <button id="noBtn">No</button>
-    </div>
-
-    <section class="result" id="result" aria-live="polite">
-      <div class="result-content">
-        <img class="card-photo" src="./photos/photo-13.jpeg" loading="lazy" decoding="async" alt="">
-        <p id="loveText"></p>
+      <div class="button-zone" id="zone">
+        <button id="yesBtn">Yes</button>
+        <button id="noBtn">No</button>
       </div>
-    </section>
+    </div>
+  </div>
+
+  <!-- HEART CENTER CTA -->
+  <div class="heart-center" id="heartCenter">
+    <div class="cta-wrap">
+      <img src="./photos/photo-13.jpeg" alt="Us making a heart with hands" loading="lazy" decoding="async">
+      <button class="center-cta" id="centerCta" aria-label="Open the love message">Click me</button>
+    </div>
+  </div>
+
+  <!-- LOVE CARD MODAL -->
+  <main class="card" id="loveCard" aria-live="polite">
+    <h1>Sruthi, will you be my Valentine? &#128149;</h1>
+    <p id="loveText">
+      You just made me the happiest person ❤️<br>
+      Every moment with you means everything to me.<br><br>
+      Happy Valentine’s Day, Love ❤️
+    </p>
   </main>
 
   <script>
     const yesBtn = document.getElementById("yesBtn");
     const noBtn = document.getElementById("noBtn");
     const zone = document.getElementById("zone");
-    const result = document.getElementById("result");
     const photoFrame = document.getElementById("photoFrame");
+    const questionLayer = document.getElementById("questionLayer");
+    const heartCenter = document.getElementById("heartCenter");
+    const centerCta = document.getElementById("centerCta");
+    const loveCard = document.getElementById("loveCard");
     const music = document.getElementById("bgMusic");
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-    const message =
-  "You just made me the happiest person ❤️\n" +
-  "Every moment with you means everything to me.\n\n" +
-  "Happy Valentine’s Day, Sruthi ❤️";
-
-    function typeMessage(el, text) {
-      let i = 0;
-      el.innerHTML = "";
-      const t = setInterval(() => {
-        const char = text[i++];
-        if (char === "\n") {
-          el.innerHTML += "<br>";
-        } else {
-          el.innerHTML += char;
-        }
-        if (i >= text.length) clearInterval(t);
-      }, 40);
-    }
-
     yesBtn.onclick = () => {
-      zone.style.display = "none";
-      result.classList.add("show");
+      questionLayer.style.display = "none";
       photoFrame.classList.add("show");
+      heartCenter.style.display = "block";
       if (!reduceMotion) {
         music.play();
-        confetti({ particleCount: 260, spread: 140, origin: { y: .6 } });
+        confetti({ particleCount: 200, spread: 120, origin: { y: .7 } });
       } else {
         music.play();
       }
-      typeMessage(document.getElementById("loveText"), message);
     };
 
+    centerCta.onclick = () => {
+      loveCard.classList.add("show");
+    };
+
+    // keep the playful no button behavior
     zone.onpointermove = e => {
       if (reduceMotion) return;
       const b = noBtn.getBoundingClientRect();
